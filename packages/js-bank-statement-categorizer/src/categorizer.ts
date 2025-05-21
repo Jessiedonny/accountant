@@ -27,7 +27,7 @@ export async function categorizeStatementData(
   data: ASBTransaction[] = [],
 ): Promise<ASBTransactionCategorized[]> {
   const requiredColumns = ['Payee', 'Memo', 'Tran Type'];
-  if (!requiredColumns.every((col) => col in data[0])) {
+  if (data.length === 0 || !requiredColumns.every((col) => col in data[0])) {
     throw new Error('Missing required columns in data.');
   }
 
@@ -58,7 +58,11 @@ export async function categorizeStatementData(
 
   const categorizedData = data.map((row, i) => {
     const category = labelData[i];
-    const probabilities = probabilitiesData.slice(i * numCategories, (i + 1) * numCategories - 1);
+    // Extract probabilities for the current transaction
+    const probabilities = probabilitiesData.slice(
+      i * numCategories,
+      (i + 1) * numCategories,
+    );
 
     return {
       ...row,
