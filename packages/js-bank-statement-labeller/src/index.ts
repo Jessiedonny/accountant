@@ -25,9 +25,9 @@ function resolveFilePath(filePath: string): string {
     path.resolve(__dirname, '..', filePath),
   ];
 
-  for (const path of possiblePaths) {
-    if (fs.existsSync(path)) {
-      return path;
+  for (const candidatePath of possiblePaths) {
+    if (fs.existsSync(candidatePath)) {
+      return candidatePath;
     }
   }
 
@@ -56,7 +56,7 @@ program
   .option(
     '-o, --output <path>',
     'Output file path',
-    'Combined-ASB-functor.xlsx'
+    'Combined-ASB-labelled.xlsx'
   )
   .action((bank: BankName, bankStatementPath, ledgerPath, options) => {
     const { output } = options;
